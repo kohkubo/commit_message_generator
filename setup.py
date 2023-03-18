@@ -9,5 +9,7 @@ setup(
             "gcm = gcm.main:main",
         ],
     },
-    install_requires=[],
+    install_requires=[
+        "openai",
+    ],
 )
