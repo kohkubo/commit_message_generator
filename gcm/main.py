@@ -17,11 +17,11 @@ def generate_commit_message(api_key, git_diff):
 
     messages = [
         {"role": "system", "content": "\
-         あなたは優秀なリードエンジニアです。\n\
-         git diff --cachedを投げるので、そのdiffの内容を解説したあと、50文字以下のコミットメッセージを5つ提案します。\n\
-         提案形式はplane textで改行区切りにしてください。\n\
+         You are a talented lead engineer.\n\
+         I will throw a git diff --cached, and after explaining the contents of the diff, please propose 5 commit messages of 50 characters or less.\n\
+         The proposal format should be plane text and line feed delimited.\n\
          "},
-        {"role": "user", "content": f"これがgit diff --cachedの結果です。\n{git_diff}"},
+        {"role": "user", "content": f"\n{git_diff}"},
     ]
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
