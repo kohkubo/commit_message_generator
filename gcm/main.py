@@ -15,17 +15,24 @@ def get_api_key():
 def generate_commit_message(api_key, git_diff):
     openai.api_key = api_key
 
-    prompt = f"Given the following git diff, suggest a concise and informative commit message that summarizes the changes made:\n{git_diff}\nCommit message:"
-    response = openai.Completion.create(
-        engine="davinci-codex",
-        prompt=prompt,
-        max_tokens=10,
+    messages = [
+        {"role": "system", "content": "\
+         あなたは優秀なリードエンジニアです。\n\
+         git diff --cachedを投げるので、そのdiffの内容を解説したあと、50文字以下のコミットメッセージを5つ提案します。\n\
+         提案形式はplane textで改行区切りにしてください。\n\
+         "},
+        {"role": "user", "content": f"これがgit diff --cachedの結果です。\n{git_diff}"},
+    ]
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=messages,
+        max_tokens=1000,
         n=1,
         stop=None,
         temperature=0.5,
     )
 
-    message = response.choices[0].text.strip()
+    message = response.choices[0].message['content'].strip()
     return message
 
 def main():
