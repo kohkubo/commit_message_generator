@@ -3,7 +3,7 @@ import subprocess
 import openai
 
 def get_git_diff():
-    result = subprocess.run(["git", "diff", "HEAD"], capture_output=True, text=True)
+    result = subprocess.run(["git", "diff", "--cached"], capture_output=True, text=True)
     return result.stdout
 
 def get_api_key():
