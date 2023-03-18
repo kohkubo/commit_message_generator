@@ -14,5 +14,14 @@ $ pip install -e .
 ## Usage
 
 ```sh
+$ git add .
 $ gcm
+The diff shows a change in the README file where a new line has been added indicating to add all files before using the gcm command.
+
+Proposed commit messages:
+1. Add git command to README
+2. Update README
+3. Include README instructions
+4. Add usage instructions
+5. Update usage in README
 ```
