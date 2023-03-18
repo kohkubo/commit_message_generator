@@ -31,6 +31,9 @@ def generate_commit_message(api_key, git_diff):
 def main():
     api_key = get_api_key()
     git_diff = get_git_diff()
+    if not git_diff:
+        print("No git diff found")
+        return
     commit_message = generate_commit_message(api_key, git_diff)
     print(commit_message)
 
