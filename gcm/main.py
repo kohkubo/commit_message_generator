@@ -26,7 +26,7 @@ def generate_commit_message(api_key, git_diff):
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=messages,
-        max_tokens=1000,
+        max_tokens=2000,
         n=1,
         stop=None,
         temperature=0.5,
