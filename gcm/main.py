@@ -17,11 +17,16 @@ def generate_commit_message(api_key, git_diff):
 
     messages = [
         {"role": "system", "content": "\
-         You are a talented lead engineer.\n\
-         I will throw a git diff --cached, and after explaining the contents of the diff, please propose 5 commit messages of 50 characters or less.\n\
-         The proposal format should be plane text and line feed delimited.\n\
-         "},
-        {"role": "user", "content": f"\n{git_diff}"},
+        You are a talented engineer at Google, and we will use abbreviations to describe basic engineering terms.\n\
+        "},
+        {"role": "user", "content": f"\
+        You are to create a commit message to be used in Git, and the changes will be given to you as git diff --cached.\n\
+        First, please describe in words the change in the current situation.\n\
+        Next, please suggest five summaries of the change, no more than 50 characters, in a format that is easy to copy-paste because it will be used as the commit message as is.\n\
+        Finally, please translate the results into Japanese.\n\
+        git diff --cached\n\
+        {git_diff}\n\
+        "},
     ]
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
