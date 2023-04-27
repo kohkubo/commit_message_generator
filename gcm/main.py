@@ -28,16 +28,22 @@ def generate_commit_message(api_key, git_diff):
         {git_diff}\n\
         "},
     ]
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=messages,
-        n=1,
-        stop=None,
-        temperature=0.5,
-    )
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=messages,
+            n=1,
+            stop=None,
+            temperature=0.5,
+        )
 
-    message = response.choices[0].message['content'].strip()
-    return message
+        message = response.choices[0].message['content'].strip()
+        return message
+    except Exception as e:
+        print(f"Error: {e}")
+        if openai.error.RateLimitError == type(e):
+            print("アクセス過多です。しばらく待ってから再度実行してください。")
+        return ""
 
 def main():
     api_key = get_api_key()
