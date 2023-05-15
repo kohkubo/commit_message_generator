@@ -2,9 +2,15 @@ import os
 import subprocess
 import openai
 
+
+import logging
+
+
 def get_git_diff():
-    result = subprocess.run(["git", "diff", "--cached"], capture_output=True, text=True)
+    result = subprocess.run(["git", "diff", "--cached"],
+                            capture_output=True, text=True)
     return result.stdout
+
 
 def get_api_key():
     api_key = os.environ.get("OPENAI_API_KEY")
@@ -12,7 +18,24 @@ def get_api_key():
         raise ValueError("OPENAI_API_KEY environment variable not set")
     return api_key
 
+
+def count_tokens(text):
+    return len(text.split())
+
+
+# Error: This model's maximum context length is 4097 tokens. However, your messages resulted in 5388 tokens. Please reduce the length of the messages.
+def check_text_length(text):
+    count = count_tokens(text)
+    if count > 4097:
+        logging.warning(
+            f"Warning: This model's maximum context length is 4097 tokens. However, your messages resulted in {len(text)} tokens. Please reduce the length of the messages.")
+        return False
+    return True
+
+
 def generate_commit_message(api_key, git_diff):
+    if not check_text_length(git_diff):
+        return ""
     openai.api_key = api_key
 
     messages = [
@@ -45,6 +68,7 @@ def generate_commit_message(api_key, git_diff):
             print("アクセス過多です。しばらく待ってから再度実行してください。")
         return ""
 
+
 def main():
     api_key = get_api_key()
     git_diff = get_git_diff()
@@ -53,6 +77,7 @@ def main():
         return
     commit_message = generate_commit_message(api_key, git_diff)
     print(commit_message)
+
 
 if __name__ == "__main__":
     main()
