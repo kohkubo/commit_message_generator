@@ -57,7 +57,6 @@ def generate_commit_message(api_key, git_diff):
             messages=messages,
             n=1,
             stop=None,
-            temperature=0.5,
         )
 
         message = response.choices[0].message['content'].strip()
